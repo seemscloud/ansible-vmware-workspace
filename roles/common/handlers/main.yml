@@ -1,5 +1,5 @@
 ---
-- name: Restart SSH Service on RHEL Family
+- name: Restart SSH Service
   service:
     name: ssh
     state: restarted
@@ -11,7 +11,7 @@
     state: started
   listen: "Restart Time Service"
 
-- name: Restart Network Service
+- name: Restart Networking Service
   service:
     name: networking
     state: restarted
