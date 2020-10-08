@@ -3,19 +3,16 @@
   service:
     name: ssh
     state: restarted
-  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
   listen: "Restart SSH Service"
 
 - name: Restart NTP Service
   service:
     name: ntp
     state: started
-  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
   listen: "Restart Time Service"
 
 - name: Restart Network Service
   service:
     name: networking
     state: restarted
-  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
   listen: "Start Network Service"
