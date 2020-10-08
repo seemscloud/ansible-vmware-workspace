@@ -1,0 +1,96 @@
+---
+- name: Install `vim` package
+  package:
+    name: vim
+    state: present
+    update_cache: yes
+
+- name: Create `/root/cron.d` Directory
+  file:
+    path: /root/cron.d
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Create `/root/cron.d/system` Directory
+  file:
+    path: /root/cron.d/system
+    owner: root
+    group: root
+    state: directory
+    mode: '0700'
+
+- name: Deploy '/root/cron.d/system/flush.sh' File
+  copy:
+    src: flush.sh
+    dest: /root/cron.d/system/flush.sh
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Add '/root/cron.d/system/flush.sh' to Cron
+  cron:
+    name: "Flush Memory"
+    minute: "*/1"
+    user: root
+    job: "/bin/bash /root/cron.d/system/flush.sh"
+
+- name: Install NTP Service
+  package:
+    update_cache: yes
+    name: ntp
+    state: present
+  notify: "Start Time Service"
+
+- name: Timezone to Europe/Warsaw
+  timezone:
+    name: Europe/Warsaw
+
+- name: Disable UseDNS 'openssh-server'
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - UserDNS #"
+    state: present
+    block: |
+      UseDNS yes
+  notify: "Restart SSH Service"
+
+- name: Setup Hostname
+  hostname:
+    name: custom_ansible_hostname
+
+- name: Configure 'hosts' File
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Configure 'resolv.conf' File
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install 'python3'
+  package:
+    update_cache: yes
+    name: python3
+    state: present
+
+- name: Uninstall 'python2' in new Distributions
+  package:
+    name: python2
+    state: absent
+
+- name: Configure '/etc/network/interfaces.d/eth0.conf' File
+  template:
+    src: eth0.conf.j2
+    dest: /etc/network/interfaces.d/eth0.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "Restart Network Service"
