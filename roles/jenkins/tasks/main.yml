@@ -1,0 +1,29 @@
+---
+- name: Add an Jenkins Apt Signing Key
+  apt_key:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+    state: present
+
+- name: Add Jenkins Repository
+  apt_repository:
+    repo: deb http://pkg.jenkins.io/debian-stable binary/
+    state: present
+    filename: jenkins-stable
+
+- name: Install 'openjdk-11-jre' Package
+  apt:
+    name: openjdk-11-jre
+    update_cache: yes
+    state: present
+
+- name: Install 'openjdk-11-jdk' Package
+  apt:
+    name: openjdk-11-jdk
+    update_cache: yes
+    state: present
+
+- name: Install 'jenkins' Package
+  apt:
+    name: jenkins
+    update_cache: yes
+    state: present

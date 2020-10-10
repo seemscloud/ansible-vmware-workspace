@@ -14,3 +14,9 @@ all:
           ansible_host: 10.10.10.10
         1dns1:
           ansible_host: 10.10.10.11
+#    jenkins:
+#      hosts:
+#        1jen0:
+#          ansible_host: 10.10.120.10
+#        1jen1:
+#          ansible_host: 10.10.120.11

@@ -5,3 +5,7 @@
 - hosts: dns
   roles:
     - dns
+#
+#- hosts: jenkins
+#  roles:
+#    - jenkins

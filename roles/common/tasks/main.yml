@@ -57,7 +57,8 @@
 
 - name: Setup Hostname
   hostname:
-    name: custom_ansible_hostname
+    name: "{{ custom_ansible_hostname }}"
+    use: systemd
 
 - name: Configure 'hosts' File
   template:
